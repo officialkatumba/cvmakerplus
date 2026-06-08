@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+<section class="container py-4">
+  <div class="market-hero no-print">
+    <div>
+      <span class="hero-kicker">Professional CV marketplace</span>
+      <h1>Build a stronger Zambian job profile</h1>
+      <p>Capture personal details, work evidence, soft skills, projects, and referees in one guided workflow.</p>
+    </div>
+    <a href="/cv/new" class="btn btn-light hero-action">Start CV Builder</a>
+  </div>
+
+  <div class="row g-4 market-layout">
+    <div class="col-lg-8">
+      <div class="dashboard-panel p-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 align-items-md-center mb-4">
+          <div>
+            <h1 class="h3 mb-1">Your CV Dashboard</h1>
+            <p class="text-muted mb-0">Create, review, edit, and export professional Zambian CVs.</p>
+          </div>
+          <a href="/cv/new" class="btn btn-primary">Create New CV</a>
+        </div>
+        <% if (!cvs || !cvs.length) { %>
+          <div class="border rounded-2 p-4 bg-light">
+            <p class="mb-0">No CVs yet. Start with the wizard and generate your first A4-ready profile.</p>
+          </div>
+        <% } else { %>
+          <div class="list-group">
+            <% cvs.forEach((cv) => { %>
+              <a href="/cv/<%= cv._id %>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <span>
+                  <strong><%= cv.personal.fullName || 'Untitled CV' %></strong><br>
+                  <span class="text-muted small"><%= cv.targetJobTitle || 'Professional CV' %></span>
+                </span>
+                <span class="badge text-bg-light"><%= new Date(cv.updatedAt).toLocaleDateString() %></span>
+              </a>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+    <aside class="col-lg-4 no-print">
+      <div class="ad-stack">
+        <div class="ad-placeholder ad-sidebar"><span>Employer Training Ad</span></div>
+        <div class="ad-placeholder ad-card"><span>Interview Prep Ad</span></div>
+        <div class="ad-placeholder ad-card accent-ad"><span>Local Courses Ad</span></div>
+      </div>
+    </aside>
+  </div>
+</section>
+<%- include('partials/footer') %>

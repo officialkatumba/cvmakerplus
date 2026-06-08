@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= pageTitle %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body class="payroll-theme">
+  <nav class="result-nav home-nav" aria-label="Primary navigation">
+    <a class="brand-link" href="/">CVMAKERPLUS</a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/login">Admin</a>
+    </div>
+  </nav>
+
+  <main class="landing-shell">
+    <section class="operations-panel identity-panel">
+      <p class="eyebrow">Start or recover your CV</p>
+      <h1>Enter your phone number and NRC number.</h1>
+      <p class="panel-copy">New users continue to the guided CV form. Returning users will see their saved CV and can edit or download it again.</p>
+      <% if (error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+      <% } %>
+      <form class="stack-form" action="/start" method="post">
+        <label>
+          Phone Number
+          <input name="phone" type="tel" placeholder="+260..." required>
+        </label>
+        <label>
+          NRC Number
+          <input name="nrc" type="text" placeholder="123456/78/9" required>
+        </label>
+        <p class="privacy-note">We use your phone and NRC to recover your CV later. The NRC is stored as a secure lookup hash.</p>
+        <button type="submit">Continue</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="result-footer">
+    <span>CVMAKERPLUS identity lookup</span>
+    <span>&copy; <%= new Date().getFullYear() %> CVMAKERPLUS.</span>
+  </footer>
+</body>
+</html>

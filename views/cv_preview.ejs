@@ -1,0 +1,237 @@
+<%- include('partials/header') %>
+<%
+  const finalContent = cvData.finalContent || {};
+  const personal = finalContent.personal || cvData.personal || {};
+  const targetJobTitle = finalContent.targetJobTitle || cvData.targetJobTitle || '';
+  const summary = finalContent.summary || (cvData.ai && cvData.ai.summary) || '';
+  const competencies = finalContent.coreCompetencies || (cvData.ai && cvData.ai.coreCompetencies) || [];
+  const contributionStatement = finalContent.contributionStatement || (cvData.ai && cvData.ai.contributionStatement) || (cvData.employmentProfile && cvData.employmentProfile.realWorldContribution) || '';
+  const experience = finalContent.experience || cvData.experience || [];
+  const education = finalContent.education || cvData.education || [];
+  const employmentProfile = finalContent.employmentProfile || cvData.employmentProfile || {};
+  const achievements = finalContent.achievements || cvData.achievements || [];
+  const projects = finalContent.projects || cvData.projects || [];
+  const languages = finalContent.languages || cvData.languages || [];
+  const hobbies = finalContent.hobbies || cvData.hobbies || [];
+  const referees = finalContent.referees || cvData.referees || [];
+  const dateRange = (start, end) => [start, end].filter(Boolean).join(' - ');
+%>
+<section class="container-fluid py-3">
+  <div class="row g-3">
+    <aside class="col-xl-2 d-none d-xl-block no-print">
+      <div class="ad-placeholder ad-sidebar">Sidebar Ad</div>
+    </aside>
+    <div class="col-xl-8">
+      <div class="d-flex flex-wrap justify-content-center gap-2 mb-3 no-print">
+        <a href="/dashboard" class="btn btn-outline-secondary">Dashboard</a>
+        <button class="btn btn-outline-primary" id="toggleEditMode" type="button">Manual Edit Mode</button>
+        <button class="btn btn-outline-success" id="saveEditsButton" type="button">Save Edits</button>
+        <button class="btn btn-outline-dark" type="button" onclick="window.print()">Print</button>
+        <form id="exportForm" action="/cv/<%= cvData._id %>/export" method="post" class="m-0">
+          <input type="hidden" name="finalContent">
+          <button class="btn btn-primary" type="submit">Download DOCX</button>
+        </form>
+      </div>
+
+      <div class="a4-page" id="cvContent" data-save-url="/cv/<%= cvData._id %>/save-edits">
+        <header class="cv-header">
+          <h1 class="cv-name mb-1" data-editable data-personal="fullName"><%= personal.fullName || 'Your Name' %></h1>
+          <div class="cv-target-title mb-3" data-editable data-target-title><%= targetJobTitle || 'Target Professional Title' %></div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="meta-pill" data-editable data-personal="email"><%= personal.email || 'email@example.com' %></span>
+            <span class="meta-pill" data-editable data-personal="phone"><%= personal.phone || '+260' %></span>
+            <span class="meta-pill" data-editable data-personal="address"><%= personal.address || 'Lusaka, Zambia' %></span>
+            <% if (personal.dateOfBirth) { %><span class="meta-pill" data-editable data-personal="dateOfBirth"><%= personal.dateOfBirth %></span><% } %>
+            <% if (personal.gender) { %><span class="meta-pill" data-editable data-personal="gender"><%= personal.gender %></span><% } %>
+            <% if (personal.maritalStatus) { %><span class="meta-pill" data-editable data-personal="maritalStatus"><%= personal.maritalStatus %></span><% } %>
+          </div>
+        </header>
+
+        <section class="cv-section">
+          <h2 class="cv-section-title">Professional Summary</h2>
+          <p data-editable data-summary><%= summary %></p>
+        </section>
+
+        <% if (experience.length) { %>
+          <section class="cv-section">
+            <h2 class="cv-section-title">Professional Experience</h2>
+            <% experience.forEach((item) => { %>
+              <div class="mb-3" data-experience-item>
+                <div class="d-flex justify-content-between gap-3 flex-wrap">
+                  <div>
+                    <div class="item-title" data-editable data-exp-role><%= item.role || 'Job Role' %></div>
+                    <div class="item-subtitle">
+                      <span data-editable data-exp-company><%= item.company || 'Company' %></span>
+                      <% if (item.location) { %> | <span data-editable data-exp-location><%= item.location %></span><% } else { %><span class="d-none" data-editable data-exp-location></span><% } %>
+                    </div>
+                  </div>
+                  <div class="item-date">
+                    <span data-editable data-exp-start><%= item.startDate || '' %></span>
+                    <% if (item.startDate || item.endDate) { %> - <% } %>
+                    <span data-editable data-exp-end><%= item.endDate || '' %></span>
+                  </div>
+                </div>
+                <ul class="mt-2 mb-0">
+                  <% (item.achievements && item.achievements.length ? item.achievements : [item.duties]).filter(Boolean).forEach((achievement) => { %>
+                    <li data-editable data-exp-achievement><%= achievement %></li>
+                  <% }) %>
+                </ul>
+              </div>
+            <% }) %>
+          </section>
+        <% } %>
+
+        <% if (education.length) { %>
+          <section class="cv-section">
+            <h2 class="cv-section-title">Education Background</h2>
+            <% education.forEach((item) => { %>
+              <div class="mb-3" data-education-item>
+                <div class="d-flex justify-content-between gap-3 flex-wrap">
+                  <div>
+                    <div class="item-title">
+                      <span data-editable data-edu-level><%= item.level || 'Education' %></span>
+                      <% if (item.qualification) { %> - <span data-editable data-edu-qualification><%= item.qualification %></span><% } else { %><span class="d-none" data-editable data-edu-qualification></span><% } %>
+                    </div>
+                    <div class="item-subtitle">
+                      <span data-editable data-edu-institution><%= item.institution || 'Institution' %></span>
+                      <% if (item.location) { %> | <span data-editable data-edu-location><%= item.location %></span><% } else { %><span class="d-none" data-editable data-edu-location></span><% } %>
+                    </div>
+                  </div>
+                  <div class="item-date">
+                    <span data-editable data-edu-start><%= item.startDate || '' %></span>
+                    <% if (item.startDate || item.endDate) { %> - <% } %>
+                    <span data-editable data-edu-end><%= item.endDate || '' %></span>
+                  </div>
+                </div>
+                <% if (item.details) { %><p class="mb-0 mt-1" data-editable data-edu-details><%= item.details %></p><% } else { %><p class="d-none" data-editable data-edu-details></p><% } %>
+              </div>
+            <% }) %>
+          </section>
+        <% } %>
+
+        <% if (competencies.length) { %>
+          <section class="cv-section">
+            <h2 class="cv-section-title">Core Competencies</h2>
+            <div>
+              <% competencies.forEach((skill) => { %>
+                <span class="skill-badge" data-editable data-competency><%= skill %></span>
+              <% }) %>
+            </div>
+          </section>
+        <% } %>
+
+        <% if (employmentProfile.personalAttributes?.length || employmentProfile.softSkills?.length || employmentProfile.pressureHandling || employmentProfile.teamworkStyle || employmentProfile.supervisionPreference || employmentProfile.learningAgility || contributionStatement) { %>
+          <section class="cv-section">
+            <h2 class="cv-section-title">Employment Readiness</h2>
+            <div class="evidence-grid">
+              <% if (employmentProfile.personalAttributes?.length) { %>
+                <div class="evidence-row"><strong>Personal Attributes</strong><span data-editable data-attribute-list><%= employmentProfile.personalAttributes.join(', ') %></span></div>
+              <% } %>
+              <% if (employmentProfile.softSkills?.length) { %>
+                <div class="evidence-row"><strong>Soft Skills</strong><span data-editable data-soft-skill-list><%= employmentProfile.softSkills.join(', ') %></span></div>
+              <% } %>
+              <% if (employmentProfile.pressureHandling) { %>
+                <div class="evidence-row"><strong>Under Pressure</strong><span data-editable data-pressure><%= employmentProfile.pressureHandling %></span></div>
+              <% } %>
+              <% if (employmentProfile.teamworkStyle) { %>
+                <div class="evidence-row"><strong>Teamwork</strong><span data-editable data-teamwork><%= employmentProfile.teamworkStyle %></span></div>
+              <% } %>
+              <% if (employmentProfile.supervisionPreference) { %>
+                <div class="evidence-row"><strong>Supervision</strong><span data-editable data-supervision><%= employmentProfile.supervisionPreference %></span></div>
+              <% } %>
+              <% if (employmentProfile.learningAgility) { %>
+                <div class="evidence-row"><strong>Learning Speed</strong><span data-editable data-learning><%= employmentProfile.learningAgility %></span></div>
+              <% } %>
+              <% if (employmentProfile.fieldStrengths) { %>
+                <div class="evidence-row"><strong>Field Fit</strong><span data-editable data-field-strengths><%= employmentProfile.fieldStrengths %></span></div>
+              <% } %>
+              <% if (contributionStatement) { %>
+                <div class="evidence-row"><strong>Contribution</strong><span data-editable data-contribution><%= contributionStatement %></span></div>
+              <% } %>
+            </div>
+          </section>
+        <% } %>
+
+        <% if (achievements.length) { %>
+          <section class="cv-section">
+            <h2 class="cv-section-title">Achievements Relevant To This Role</h2>
+            <div class="evidence-grid">
+              <% achievements.forEach((achievement) => { %>
+                <div class="evidence-row" data-achievement-item>
+                  <strong data-editable data-ach-title><%= achievement.title || 'Achievement' %></strong>
+                  <span>
+                    <span data-editable data-ach-context><%= achievement.context || '' %></span>
+                    <% if (achievement.result) { %> | <span data-editable data-ach-result><%= achievement.result %></span><% } else { %><span class="d-none" data-editable data-ach-result></span><% } %>
+                    <% if (achievement.relevance) { %><br><span data-editable data-ach-relevance><%= achievement.relevance %></span><% } else { %><span class="d-none" data-editable data-ach-relevance></span><% } %>
+                  </span>
+                </div>
+              <% }) %>
+            </div>
+          </section>
+        <% } %>
+
+        <% if (projects.length) { %>
+          <section class="cv-section">
+            <h2 class="cv-section-title">Projects & Practical Exposure</h2>
+            <div class="evidence-grid">
+              <% projects.forEach((project) => { %>
+                <div class="evidence-row" data-project-item>
+                  <strong data-editable data-project-title><%= project.title || 'Project' %></strong>
+                  <span>
+                    <span data-editable data-project-context><%= project.context || '' %></span>
+                    <% if (project.role) { %> | <span data-editable data-project-role><%= project.role %></span><% } else { %><span class="d-none" data-editable data-project-role></span><% } %>
+                    <% if (project.contribution) { %><br><span data-editable data-project-contribution><%= project.contribution %></span><% } else { %><span class="d-none" data-editable data-project-contribution></span><% } %>
+                    <% if (project.outcome) { %><br><span data-editable data-project-outcome><%= project.outcome %></span><% } else { %><span class="d-none" data-editable data-project-outcome></span><% } %>
+                  </span>
+                </div>
+              <% }) %>
+            </div>
+          </section>
+        <% } %>
+
+        <% if (languages.length) { %>
+          <section class="cv-section">
+            <h2 class="cv-section-title">Languages</h2>
+            <p>
+              <% languages.forEach((language, index) => { %>
+                <span data-editable data-language><%= language %></span><%= index < languages.length - 1 ? ', ' : '' %>
+              <% }) %>
+            </p>
+          </section>
+        <% } %>
+
+        <% if (hobbies.length) { %>
+          <section class="cv-section">
+            <h2 class="cv-section-title">Hobbies & Interests</h2>
+            <p>
+              <% hobbies.forEach((hobby, index) => { %>
+                <span data-editable data-hobby><%= hobby %></span><%= index < hobbies.length - 1 ? ', ' : '' %>
+              <% }) %>
+            </p>
+          </section>
+        <% } %>
+
+        <section class="cv-section">
+          <h2 class="cv-section-title">Professional Referees</h2>
+          <div class="row g-3">
+            <% referees.slice(0, 3).forEach((referee) => { %>
+              <div class="col-md-4" data-referee-item>
+                <div class="border rounded-2 p-3 h-100">
+                  <div class="item-title" data-editable data-ref-name><%= referee.fullName || 'Referee Name' %></div>
+                  <div class="item-subtitle" data-editable data-ref-designation><%= referee.designation || 'Designation' %></div>
+                  <div data-editable data-ref-company><%= referee.company || 'Company' %></div>
+                  <div class="small mt-2" data-editable data-ref-phone><%= referee.phone || '+260' %></div>
+                  <div class="small" data-editable data-ref-email><%= referee.email || 'email@example.com' %></div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        </section>
+      </div>
+    </div>
+    <aside class="col-xl-2 d-none d-xl-block no-print">
+      <div class="ad-placeholder ad-sidebar">Sidebar Ad</div>
+    </aside>
+  </div>
+</section>
+<%- include('partials/footer') %>

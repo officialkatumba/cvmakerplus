@@ -1,0 +1,270 @@
+<%- include('partials/header') %>
+<section class="container py-4">
+  <div class="builder-shell">
+    <aside class="builder-aside no-print">
+      <div class="ad-placeholder ad-sidebar"><span>Recruitment Ad</span></div>
+      <div class="ad-placeholder ad-card"><span>Skills Course Ad</span></div>
+    </aside>
+    <div class="wizard-card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0">Zambian CV Wizard</h1>
+      <div class="d-flex gap-2">
+        <% [1, 2, 3, 4, 5, 6, 7].forEach((step, index) => { %>
+          <span class="step-dot" data-step-dot="<%= index %>"><%= step %></span>
+        <% }) %>
+      </div>
+    </div>
+
+    <form action="/cv" method="post" data-cv-form>
+      <div class="wizard-step active">
+        <h2 class="h5 mb-3">Personal & Demographics</h2>
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label">Full Name</label><input class="form-control" name="fullName" required></div>
+          <div class="col-md-6"><label class="form-label">Email</label><input class="form-control" name="email" type="email" required></div>
+          <div class="col-md-6"><label class="form-label">Phone Number</label><input class="form-control" name="phone" required></div>
+          <div class="col-md-6"><label class="form-label">Physical Residential Address</label><input class="form-control" name="address" placeholder="Chilenje, Lusaka" required></div>
+          <div class="col-md-4"><label class="form-label">Date of Birth</label><input class="form-control" name="dateOfBirth" type="date"></div>
+          <div class="col-md-4"><label class="form-label">Gender</label><select class="form-select" name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option></select></div>
+          <div class="col-md-4"><label class="form-label">Marital Status</label><select class="form-select" name="maritalStatus"><option value="">Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div>
+        </div>
+        <div class="mt-4 text-end"><button class="btn btn-primary" type="button" data-next-step>Next</button></div>
+      </div>
+
+      <div class="wizard-step">
+        <h2 class="h5 mb-3">Career Target</h2>
+        <label class="form-label">Target Professional Job Title</label>
+        <input class="form-control form-control-lg" name="targetJobTitle" placeholder="Administrative Assistant, Mining Technician, Accounts Clerk" required>
+        <div class="row g-3 mt-2">
+          <div class="col-md-6">
+            <label class="form-label">Field-Specific Strengths</label>
+            <textarea class="form-control" name="fieldStrengths" rows="4" placeholder="What makes you suitable for this field? Mention tools, habits, training, interests, or exposure."></textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Real-World Contribution</label>
+            <textarea class="form-control" name="realWorldContribution" rows="4" placeholder="What can you contribute to a real workplace in this role?"></textarea>
+          </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-between">
+          <button class="btn btn-outline-secondary" type="button" data-prev-step>Back</button>
+          <button class="btn btn-primary" type="button" data-next-step>Next</button>
+        </div>
+      </div>
+
+      <div class="wizard-step">
+        <h2 class="h5 mb-3">Personal Attributes & Workplace Behaviour</h2>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Personal Attributes</label>
+            <input class="form-control" name="personalAttributes" placeholder="Reliable, honest, punctual, disciplined">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Soft Skills</label>
+            <input class="form-control" name="softSkills" placeholder="Communication, leadership, problem solving, teamwork">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">How You Behave Under Pressure</label>
+            <textarea class="form-control" name="pressureHandling" rows="4" placeholder="Describe how you stay calm, prioritize, ask for help, and finish work under pressure."></textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">How You Work With Others</label>
+            <textarea class="form-control" name="teamworkStyle" rows="4" placeholder="Describe your teamwork style, communication, conflict handling, and respect for colleagues."></textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Supervision Needed</label>
+            <select class="form-select" name="supervisionPreference">
+              <option value="">Select</option>
+              <option>I work independently after clear instructions</option>
+              <option>I prefer regular check-ins while learning</option>
+              <option>I work best with close supervision on new tasks</option>
+              <option>I can supervise myself and support others</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">How Quickly You Learn New Things</label>
+            <select class="form-select" name="learningAgility">
+              <option value="">Select</option>
+              <option>Very quickly with brief guidance</option>
+              <option>Quickly through practice and feedback</option>
+              <option>Steadily with examples and supervision</option>
+              <option>Best through structured training</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Workplace Values</label>
+            <input class="form-control" name="workplaceValues" placeholder="Safety, integrity, confidentiality, customer care, accountability">
+          </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-between">
+          <button class="btn btn-outline-secondary" type="button" data-prev-step>Back</button>
+          <button class="btn btn-primary" type="button" data-next-step>Next</button>
+        </div>
+      </div>
+
+      <div class="wizard-step">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-2 align-items-md-center mb-3">
+          <h2 class="h5 mb-0">Achievements & Projects</h2>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary" type="button" data-add-repeat="#achievementList" data-template="#achievementTemplate">Add Achievement</button>
+            <button class="btn btn-sm btn-outline-primary" type="button" data-add-repeat="#projectList" data-template="#projectTemplate">Add Project</button>
+          </div>
+        </div>
+        <h3 class="h6">Achievements Toward This Type of Job</h3>
+        <div id="achievementList">
+          <div class="border rounded-2 p-3 mb-3" data-repeat-item>
+            <div class="row g-3">
+              <div class="col-md-4"><label class="form-label">Achievement</label><input class="form-control" name="achievements[0][title]" placeholder="Best student project, sales target, safety record"></div>
+              <div class="col-md-4"><label class="form-label">Where It Happened</label><input class="form-control" name="achievements[0][context]" placeholder="School, college, workplace, community"></div>
+              <div class="col-md-4"><label class="form-label">Result</label><input class="form-control" name="achievements[0][result]" placeholder="What improved or what was completed?"></div>
+              <div class="col-12"><label class="form-label">Why It Matters For This Job</label><textarea class="form-control" name="achievements[0][relevance]" rows="3"></textarea></div>
+            </div>
+          </div>
+        </div>
+        <h3 class="h6 mt-4">Projects You Have Been Involved With</h3>
+        <div id="projectList">
+          <div class="border rounded-2 p-3 mb-3" data-repeat-item>
+            <div class="row g-3">
+              <div class="col-md-4"><label class="form-label">Project Name</label><input class="form-control" name="projects[0][title]"></div>
+              <div class="col-md-4"><label class="form-label">Project Context</label><input class="form-control" name="projects[0][context]" placeholder="School, work, church, community, internship"></div>
+              <div class="col-md-4"><label class="form-label">Your Role</label><input class="form-control" name="projects[0][role]"></div>
+              <div class="col-md-6"><label class="form-label">Your Contribution</label><textarea class="form-control" name="projects[0][contribution]" rows="3"></textarea></div>
+              <div class="col-md-6"><label class="form-label">Outcome / Tools Used</label><textarea class="form-control" name="projects[0][outcome]" rows="3" placeholder="What changed, what was delivered, what tools or methods did you use?"></textarea></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-between">
+          <button class="btn btn-outline-secondary" type="button" data-prev-step>Back</button>
+          <button class="btn btn-primary" type="button" data-next-step>Next</button>
+        </div>
+      </div>
+
+      <div class="wizard-step">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h5 mb-0">Educational Timeline</h2>
+          <button class="btn btn-sm btn-outline-primary" type="button" data-add-repeat="#educationList" data-template="#educationTemplate">Add Education</button>
+        </div>
+        <div id="educationList">
+          <% ['Tertiary', 'Secondary', 'Primary'].forEach((level, index) => { %>
+            <div class="border rounded-2 p-3 mb-3" data-repeat-item>
+              <div class="row g-3">
+                <div class="col-md-3"><label class="form-label">Level</label><input class="form-control" name="education[<%= index %>][level]" value="<%= level %>"></div>
+                <div class="col-md-5"><label class="form-label">Institution</label><input class="form-control" name="education[<%= index %>][institution]" required></div>
+                <div class="col-md-4"><label class="form-label">Qualification</label><input class="form-control" name="education[<%= index %>][qualification]" placeholder="ECZ Grade 12 Certificate"></div>
+                <div class="col-md-4"><label class="form-label">Location</label><input class="form-control" name="education[<%= index %>][location]"></div>
+                <div class="col-md-4"><label class="form-label">Start Date</label><input class="form-control" name="education[<%= index %>][startDate]" type="date"></div>
+                <div class="col-md-4"><label class="form-label">End Date</label><input class="form-control" name="education[<%= index %>][endDate]" type="date"></div>
+                <div class="col-12"><label class="form-label">Details</label><textarea class="form-control" name="education[<%= index %>][details]" rows="2"></textarea></div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+        <div class="mt-4 d-flex justify-content-between">
+          <button class="btn btn-outline-secondary" type="button" data-prev-step>Back</button>
+          <button class="btn btn-primary" type="button" data-next-step>Next</button>
+        </div>
+      </div>
+
+      <div class="wizard-step">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h5 mb-0">Work Experience</h2>
+          <button class="btn btn-sm btn-outline-primary" type="button" data-add-repeat="#experienceList" data-template="#experienceTemplate">Add Experience</button>
+        </div>
+        <div id="experienceList">
+          <div class="border rounded-2 p-3 mb-3" data-repeat-item>
+            <div class="row g-3">
+              <div class="col-md-4"><label class="form-label">Company Name</label><input class="form-control" name="experience[0][company]"></div>
+              <div class="col-md-4"><label class="form-label">Location</label><input class="form-control" name="experience[0][location]"></div>
+              <div class="col-md-4"><label class="form-label">Job Role</label><input class="form-control" name="experience[0][role]"></div>
+              <div class="col-md-6"><label class="form-label">Start Date</label><input class="form-control" name="experience[0][startDate]" type="date"></div>
+              <div class="col-md-6"><label class="form-label">End Date</label><input class="form-control" name="experience[0][endDate]" type="date"></div>
+              <div class="col-12"><label class="form-label">Core Duties</label><textarea class="form-control" name="experience[0][duties]" rows="4"></textarea></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-between">
+          <button class="btn btn-outline-secondary" type="button" data-prev-step>Back</button>
+          <button class="btn btn-primary" type="button" data-next-step>Next</button>
+        </div>
+      </div>
+
+      <div class="wizard-step">
+        <h2 class="h5 mb-3">Languages, Hobbies & Referees</h2>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6"><label class="form-label">Languages Spoken</label><input class="form-control" name="languages" placeholder="English, Bemba, Nyanja"></div>
+          <div class="col-md-6"><label class="form-label">Hobbies / Interests</label><input class="form-control" name="hobbies" placeholder="Reading, community work, football"></div>
+        </div>
+        <h3 class="h6">3 Professional Referees</h3>
+        <% [0, 1, 2].forEach((index) => { %>
+          <div class="border rounded-2 p-3 mb-3">
+            <div class="row g-3">
+              <div class="col-md-4"><label class="form-label">Full Name</label><input class="form-control" name="referees[<%= index %>][fullName]" required></div>
+              <div class="col-md-4"><label class="form-label">Designation / Position</label><input class="form-control" name="referees[<%= index %>][designation]" required></div>
+              <div class="col-md-4"><label class="form-label">Company</label><input class="form-control" name="referees[<%= index %>][company]" required></div>
+              <div class="col-md-6"><label class="form-label">Phone</label><input class="form-control" name="referees[<%= index %>][phone]" required></div>
+              <div class="col-md-6"><label class="form-label">Email</label><input class="form-control" name="referees[<%= index %>][email]" type="email" required></div>
+            </div>
+          </div>
+        <% }) %>
+        <div class="mt-4 d-flex justify-content-between">
+          <button class="btn btn-outline-secondary" type="button" data-prev-step>Back</button>
+          <button class="btn btn-primary" type="submit">Generate CV</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+</section>
+
+<template id="educationTemplate">
+  <div class="border rounded-2 p-3 mb-3" data-repeat-item>
+    <button class="btn btn-sm btn-outline-danger float-end" type="button" data-remove-repeat>Remove</button>
+    <div class="row g-3">
+      <div class="col-md-3"><label class="form-label">Level</label><input class="form-control" name="education[__INDEX__][level]"></div>
+      <div class="col-md-5"><label class="form-label">Institution</label><input class="form-control" name="education[__INDEX__][institution]"></div>
+      <div class="col-md-4"><label class="form-label">Qualification</label><input class="form-control" name="education[__INDEX__][qualification]"></div>
+      <div class="col-md-4"><label class="form-label">Location</label><input class="form-control" name="education[__INDEX__][location]"></div>
+      <div class="col-md-4"><label class="form-label">Start Date</label><input class="form-control" name="education[__INDEX__][startDate]" type="date"></div>
+      <div class="col-md-4"><label class="form-label">End Date</label><input class="form-control" name="education[__INDEX__][endDate]" type="date"></div>
+      <div class="col-12"><label class="form-label">Details</label><textarea class="form-control" name="education[__INDEX__][details]" rows="2"></textarea></div>
+    </div>
+  </div>
+</template>
+
+<template id="experienceTemplate">
+  <div class="border rounded-2 p-3 mb-3" data-repeat-item>
+    <button class="btn btn-sm btn-outline-danger float-end" type="button" data-remove-repeat>Remove</button>
+    <div class="row g-3">
+      <div class="col-md-4"><label class="form-label">Company Name</label><input class="form-control" name="experience[__INDEX__][company]"></div>
+      <div class="col-md-4"><label class="form-label">Location</label><input class="form-control" name="experience[__INDEX__][location]"></div>
+      <div class="col-md-4"><label class="form-label">Job Role</label><input class="form-control" name="experience[__INDEX__][role]"></div>
+      <div class="col-md-6"><label class="form-label">Start Date</label><input class="form-control" name="experience[__INDEX__][startDate]" type="date"></div>
+      <div class="col-md-6"><label class="form-label">End Date</label><input class="form-control" name="experience[__INDEX__][endDate]" type="date"></div>
+      <div class="col-12"><label class="form-label">Core Duties</label><textarea class="form-control" name="experience[__INDEX__][duties]" rows="4"></textarea></div>
+    </div>
+  </div>
+</template>
+
+<template id="achievementTemplate">
+  <div class="border rounded-2 p-3 mb-3" data-repeat-item>
+    <button class="btn btn-sm btn-outline-danger float-end" type="button" data-remove-repeat>Remove</button>
+    <div class="row g-3">
+      <div class="col-md-4"><label class="form-label">Achievement</label><input class="form-control" name="achievements[__INDEX__][title]"></div>
+      <div class="col-md-4"><label class="form-label">Where It Happened</label><input class="form-control" name="achievements[__INDEX__][context]"></div>
+      <div class="col-md-4"><label class="form-label">Result</label><input class="form-control" name="achievements[__INDEX__][result]"></div>
+      <div class="col-12"><label class="form-label">Why It Matters For This Job</label><textarea class="form-control" name="achievements[__INDEX__][relevance]" rows="3"></textarea></div>
+    </div>
+  </div>
+</template>
+
+<template id="projectTemplate">
+  <div class="border rounded-2 p-3 mb-3" data-repeat-item>
+    <button class="btn btn-sm btn-outline-danger float-end" type="button" data-remove-repeat>Remove</button>
+    <div class="row g-3">
+      <div class="col-md-4"><label class="form-label">Project Name</label><input class="form-control" name="projects[__INDEX__][title]"></div>
+      <div class="col-md-4"><label class="form-label">Project Context</label><input class="form-control" name="projects[__INDEX__][context]"></div>
+      <div class="col-md-4"><label class="form-label">Your Role</label><input class="form-control" name="projects[__INDEX__][role]"></div>
+      <div class="col-md-6"><label class="form-label">Your Contribution</label><textarea class="form-control" name="projects[__INDEX__][contribution]" rows="3"></textarea></div>
+      <div class="col-md-6"><label class="form-label">Outcome / Tools Used</label><textarea class="form-control" name="projects[__INDEX__][outcome]" rows="3"></textarea></div>
+    </div>
+  </div>
+</template>
+<%- include('partials/footer') %>

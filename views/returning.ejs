@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= pageTitle %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body class="payroll-theme">
+  <nav class="result-nav home-nav" aria-label="Primary navigation">
+    <a class="brand-link" href="/">CVMAKERPLUS</a>
+    <div class="nav-links">
+      <a href="/start">Use Another NRC</a>
+      <a href="/login">Admin</a>
+    </div>
+  </nav>
+
+  <main class="landing-shell">
+    <section class="operations-panel identity-panel">
+      <p class="eyebrow">Welcome back</p>
+      <h1><%= cvData.personal.fullName || 'Your saved CV is ready' %></h1>
+      <p class="panel-copy">We found your saved CV for <strong><%= cvData.targetJobTitle || 'your target role' %></strong>. You can open the preview, manually edit, save changes, and download the Word file.</p>
+      <div class="action-row">
+        <a class="upload-zone" href="/cv/<%= cvData._id %>"><span>Open My CV</span></a>
+        <a class="secondary-button" href="/cv/new">Create Another CV</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="result-footer">
+    <span>CVMAKERPLUS returning user workspace</span>
+    <span>&copy; <%= new Date().getFullYear() %> CVMAKERPLUS.</span>
+  </footer>
+</body>
+</html>
